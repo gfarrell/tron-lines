@@ -3,39 +3,8 @@ module MapSpec (spec) where
 import Test.Hspec
 import Map
 
-isEmpty :: Tile -> Bool
-isEmpty Empty {} = True
-isEmpty _        = False
-
-isHead :: Tile -> Bool
-isHead Head {} = True
-isHead _       = False
-
-isTail :: Tile -> Bool
-isTail Tail {} = True
-isTail _       = False
-
-
 spec :: Spec
 spec = do
-  describe "tiles" $ do
-    it "are equal if both x and y coordinates are the same" $ do
-      let a = Head (Vec2D 15 26) Nothing
-          b = Tail (Vec2D 15 26) 1 Nothing
-          c = Empty (Vec2D 15 26)
-      shouldBe (a == b) True
-      shouldBe (a == c) True
-      shouldBe (c == b) True
-
-    it "are not equal if either x coordinates or y coordinates do not match" $ do
-      let a = Empty (Vec2D 15 26)
-          b = Empty (Vec2D 10 26)
-          c = Empty (Vec2D 15 42)
-          d = Empty (Vec2D 10 42)
-      shouldBe (a /= b) True
-      shouldBe (a /= c) True
-      shouldBe (a /= d) True
-
   describe "moveHead" $
     it "returns a Map for which the given Head tile has been correctly moved" $ do
       let map = [ Empty (Vec2D 0 0), Empty (Vec2D 1 0), Empty (Vec2D 2 0),

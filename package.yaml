@@ -21,6 +21,9 @@ description:         Please see the README on GitHub at <https://github.com/gfar
 
 dependencies:
 - base >= 4.7 && < 5
+- random >= 1.1 && < 2
+- random-shuffle == 0.0.4
+- hspec >= 2.7 && < 3
 
 library:
   source-dirs: src

@@ -11,9 +11,9 @@ reach a maximum length).
 
 ## TODO
 
-- [ ] Write the general algorithm for generating the map and stepping through
+- [x] Write the general algorithm for generating the map and stepping through
   frames
-- [ ] Render to the command line
+- [x] Render to the command line
 - [ ] Render to some sort of graphical engine
 - [ ] Render an orthographical perspective
 - [ ] Make it pretty

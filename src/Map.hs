@@ -3,13 +3,18 @@ module Map (
   Coord,
   Vec2D (..),
   Tile (..),
+  isEmpty,
+  isHead,
+  isTail,
   Map,
   getCoordinates,
   getNextTileVec2D,
   getLifetime,
+  colocatedP,
   moveHead,
   ageTile,
-  getSurroundingTiles
+  getSurroundingTiles,
+  printMap
 ) where
 
 tileMaxAge :: Int
@@ -22,6 +27,10 @@ instance Eq Vec2D where
   (==) (Vec2D x1 y1) (Vec2D x2 y2) = x1 == x2 && y1 == y2
   (/=) (Vec2D x1 y1) (Vec2D x2 y2) = x1 /= x2 || y1 /= y2
 
+getX :: Vec2D -> Coord
+getX (Vec2D x _) = x
+getY :: Vec2D -> Coord
+getY (Vec2D _ y) = y
 vecadd :: Vec2D -> Vec2D -> Vec2D
 vecadd (Vec2D x1 y1) (Vec2D x2 y2) = Vec2D (x1 + x2) (y1 + y2)
 vecsub :: Vec2D -> Vec2D -> Vec2D
@@ -32,7 +41,25 @@ len (Vec2D x y) = sqrt (fromIntegral(x ^ 2) + fromIntegral(y ^ 2))
 data Tile = Head Vec2D (Maybe Vec2D)
           | Tail Vec2D Int (Maybe Vec2D)
           | Empty Vec2D
-  deriving Show
+
+instance Show Tile where
+  show (Head (Vec2D x y) (Just (Vec2D a b))) = "[" ++ show x ++ "," ++ show y ++ " H  >" ++ show a ++ "," ++ show b ++ "]"
+  show (Head (Vec2D x y) Nothing) = "[" ++ show x ++ "," ++ show y ++ " H  > ø ]"
+  show (Tail (Vec2D x y) l (Just (Vec2D a b))) = "[" ++ show x ++ "," ++ show y ++ " T " ++ show l ++ ">" ++ show a ++ "," ++ show b ++ "]"
+  show (Tail (Vec2D x y) l Nothing) = "[" ++ show x ++ "," ++ show y ++ " T " ++ show l ++ "> ø ]"
+  show (Empty (Vec2D x y)) = "[" ++ show x ++ "," ++ show y ++ " E      ]"
+
+isEmpty :: Tile -> Bool
+isEmpty Empty {} = True
+isEmpty _        = False
+
+isHead :: Tile -> Bool
+isHead Head {} = True
+isHead _       = False
+
+isTail :: Tile -> Bool
+isTail Tail {} = True
+isTail _       = False
 
 type Map = [Tile]
 
@@ -50,10 +77,22 @@ getLifetime :: Tile -> Int
 getLifetime (Tail _ l _) = l
 getLifetime _            = 0
 
-instance Eq Tile where
-  (==) a b = getCoordinates a == getCoordinates b
-  (/=) a b = getCoordinates a /= getCoordinates b
+colocatedP :: Tile -> Tile -> Bool
+colocatedP a b = getCoordinates a == getCoordinates b
 
+instance Eq Tile where
+  (==) (Head p n) (Head q m) = p == q && n == m
+  (==) (Tail p k n) (Tail q l m) = p == q && n == m && k == l
+  (==) (Empty p) (Empty q) = p == q
+  (==) _ _ = False
+  (/=) a b = not (a == b)
+
+printMap :: Map -> String
+printMap tiles = go xmax tiles
+                 where xmax = maximum . map (getX . getCoordinates) $ tiles
+                       go :: Int -> Map -> String
+                       go l (t:ts) = show t ++ (if getX (getCoordinates t) >= l then "\n" else " ") ++ go l ts
+                       go _ [] = "\n"
 
 makeHead :: Vec2D -> Vec2D -> Tile
 makeHead tileVec2D nextTileVec2D = Head tileVec2D (Just nextTileVec2D)
