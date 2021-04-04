@@ -14,6 +14,8 @@ reach a maximum length).
 - [x] Write the general algorithm for generating the map and stepping through
   frames
 - [x] Render to the command line
+- [ ] Read maps from a file
+- [ ] Generate maps of a certain size
 - [ ] Render to some sort of graphical engine
 - [ ] Render an orthographical perspective
 - [ ] Make it pretty

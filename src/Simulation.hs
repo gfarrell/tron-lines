@@ -1,5 +1,6 @@
 module Simulation (
   nextFrame,
+  nextFrameR,
   runFramesR,
 ) where
 
@@ -32,9 +33,10 @@ iterateM f = iterateM'
   where iterateM' 0 _ = return []
         iterateM' n x = (x:) <$> (f x >>= iterateM' (pred n))
 
+nextFrameR :: Map -> IO Map
+nextFrameR tiles = do
+  gen <- newStdGen
+  return (nextFrame gen tiles)
+
 runFramesR :: Int -> Map -> IO [Map]
 runFramesR = iterateM nextFrameR
-  where nextFrameR :: Map -> IO Map
-        nextFrameR tiles = do
-          gen <- newStdGen
-          return (nextFrame gen tiles)

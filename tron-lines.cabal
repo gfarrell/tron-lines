@@ -27,13 +27,15 @@ library
   exposed-modules:
       Lib
       Map
+      Render.Terminal
       Simulation
   other-modules:
       Paths_tron_lines
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      ansi-terminal ==0.10.*
+    , base >=4.7 && <5
     , hspec >=2.7 && <3
     , random >=1.1 && <2
     , random-shuffle ==0.0.4
@@ -47,7 +49,8 @@ executable tron-lines-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      ansi-terminal ==0.10.*
+    , base >=4.7 && <5
     , hspec >=2.7 && <3
     , random >=1.1 && <2
     , random-shuffle ==0.0.4
@@ -65,7 +68,8 @@ test-suite tron-lines-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      ansi-terminal ==0.10.*
+    , base >=4.7 && <5
     , hspec
     , random >=1.1 && <2
     , random-shuffle ==0.0.4
